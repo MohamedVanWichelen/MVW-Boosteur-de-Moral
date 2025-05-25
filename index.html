@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> MVW |Boosteur de Moral</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .phrase-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        
+        .phrase-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .sun {
+            background: radial-gradient(circle at center, #fde68a 0%, #f59e0b 70%, transparent 71%);
+            filter: drop-shadow(0 0 20px rgba(245, 158, 11, 0.4));
+        }
+        
+        .animated-element {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+        
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-amber-50 to-amber-100 min-h-screen font-sans overflow-x-hidden">
+    <div class="container mx-auto px-4 py-12 md:py-20">
+        <!-- En-tête -->
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <div class="sun w-24 h-24 rounded-full mx-auto mb-8 floating"></div>
+            <h1 class="text-4xl md:text-5xl font-bold text-amber-900 mb-4 animated-element">
+                Ton Boosteur de Moral
+            </h1>
+            <p class="text-lg text-amber-800/80 mb-8 animated-element delay-1">
+                Parfois, on a juste besoin d'un petit coup de pouce pour voir la vie en rose à nouveau.
+            </p>
+        </div>
+        
+        <!-- Carte de phrase -->
+        <div class="max-w-2xl mx-auto mb-16">
+            <div id="phrase-container" class="phrase-card rounded-2xl p-8 md:p-10 text-center">
+                <div class="text-amber-500 mb-4 text-5xl">
+                    <i class="fas fa-quote-left opacity-30"></i>
+                </div>
+                <p id="phrase-text" class="text-2xl md:text-3xl font-medium text-amber-900 mb-6">
+                    Clique sur le bouton pour découvrir ta dose de motivation quotidienne !
+                </p>
+                <div class="text-amber-500 mt-4 text-5xl">
+                    <i class="fas fa-quote-right opacity-30"></i>
+                </div>
+                <div id="auteur" class="text-amber-700/70 italic mt-4 hidden">
+                    - <span id="auteur-nom"></span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bouton générateur -->
+        <div class="text-center">
+            <button id="generer-btn" class="bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-white font-bold py-4 px-8 rounded-full text-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-opacity-50 animated-element delay-2">
+                <i class="fas fa-magic mr-2"></i> Génère ta dose de bonheur
+            </button>
+        </div>
+        
+        <!-- Section supplémentaire -->
+        <div class="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            <div class="bg-white/50 backdrop-blur-sm rounded-xl p-6 border border-amber-200/50 animated-element delay-3">
+                <div class="text-amber-600 text-3xl mb-3">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h3 class="font-bold text-amber-900 mb-2">Bienveillance</h3>
+                <p class="text-amber-800/80 text-sm">
+                    Chaque phrase est choisie pour apporter chaleur et réconfort à ton quotidien.
+                </p>
+            </div>
+            <div class="bg-white/50 backdrop-blur-sm rounded-xl p-6 border border-amber-200/50 animated-element delay-3">
+                <div class="text-amber-600 text-3xl mb-3">
+                    <i class="fas fa-random"></i>
+                </div>
+                <h3 class="font-bold text-amber-900 mb-2">Variété</h3>
+                <p class="text-amber-800/80 text-sm">
+                    Des centaines de combinaisons possibles pour des messages toujours uniques.
+                </p>
+            </div>
+            <div class="bg-white/50 backdrop-blur-sm rounded-xl p-6 border border-amber-200/50 animated-element delay-3">
+                <div class="text-amber-600 text-3xl mb-3">
+                    <i class="fas fa-smile-beam"></i>
+                </div>
+                <h3 class="font-bold text-amber-900 mb-2">Positivité</h3>
+                <p class="text-amber-800/80 text-sm">
+                    Un petit rayon de soleil numérique pour égayer ta journée.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const genererBtn = document.getElementById('generer-btn');
+            const phraseText = document.getElementById('phrase-text');
+            const auteur = document.getElementById('auteur');
+            const auteurNom = document.getElementById('auteur-nom');
+            const phraseContainer = document.getElementById('phrase-container');
+            
+            // Phrases motivantes avec auteurs
+            const phrases = [
+                { texte: "Tu es bien plus fort que tu ne le crois. La preuve : tu es encore là aujourd'hui.", auteur: "Ton futur toi" },
+                { texte: "Les échecs ne sont que des marches vers le succès. Continue d'avancer.", auteur: "Un mentor bienveillant" },
+                { texte: "Ta valeur ne diminue pas à cause de l'incapacité de quelqu'un à voir ta lumière.", auteur: "Ton intuition" },
+                { texte: "Aujourd'hui est une nouvelle page blanche. Écris-y une belle histoire.", auteur: "Ton stylo chanceux" },
+                { texte: "Les nuages passent, mais le soleil est toujours là. Tout comme ton potentiel.", auteur: "Un rayon de soleil" },
+                { texte: "Tu n'es pas coincé, tu es juste en préparation pour quelque chose de grand.", auteur: "L'univers" },
+                { texte: "Chaque petit pas compte. Regarde derrière toi et vois le chemin parcouru.", auteur: "Tes empreintes" },
+                { texte: "Ta présence sur Terre rend le monde plus beau. Ne l'oublie jamais.", auteur: "Une étoile" },
+                { texte: "Les défis que tu surmontes aujourd'hui deviendront tes forces de demain.", auteur: "Ta résilience" },
+                { texte: "Souriez, respirez et allez doucement. Tout ira bien.", auteur: "Thich Nhat Hanh" }
+            ];
+            
+            // Effet de confettis
+            function lanceConfettis() {
+                const confettis = [];
+                const couleurs = ['#f59e0b', '#f97316', '#fbbf24', '#fcd34d', '#fde68a'];
+                
+                for (let i = 0; i < 50; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.style.position = 'absolute';
+                    confetti.style.width = '10px';
+                    confetti.style.height = '10px';
+                    confetti.style.backgroundColor = couleurs[Math.floor(Math.random() * couleurs.length)];
+                    confetti.style.borderRadius = '50%';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.top = '-10px';
+                    confetti.style.opacity = '0.8';
+                    confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                    
+                    document.body.appendChild(confetti);
+                    confettis.push(confetti);
+                    
+                    const animation = confetti.animate([
+                        { top: '-10px', transform: `rotate(${Math.random() * 360}deg)` },
+                        { top: '100vh', transform: `rotate(${Math.random() * 360}deg)` }
+                    ], {
+                        duration: 2000 + Math.random() * 3000,
+                        easing: 'cubic-bezier(0.1, 0.8, 0.9, 1)'
+                    });
+                    
+                    animation.onfinish = () => confetti.remove();
+                }
+            }
+            
+            // Génère une phrase aléatoire
+            genererBtn.addEventListener('click', function() {
+                // Effet de clic
+                this.classList.add('animate-pulse');
+                setTimeout(() => this.classList.remove('animate-pulse'), 300);
+                
+                // Animation de la carte
+                phraseContainer.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    phraseContainer.style.transform = 'scale(1)';
+                }, 200);
+                
+                // Sélection aléatoire
+                const randomIndex = Math.floor(Math.random() * phrases.length);
+                const phrase = phrases[randomIndex];
+                
+                // Affichage progressif
+                phraseText.style.opacity = '0';
+                auteur.style.opacity = '0';
+                
+                setTimeout(() => {
+                    phraseText.textContent = phrase.texte;
+                    auteurNom.textContent = phrase.auteur;
+                    
+                    phraseText.style.opacity = '1';
+                    auteur.style.opacity = '1';
+                    auteur.classList.remove('hidden');
+                    
+                    // Confettis pour célébrer
+                    lanceConfettis();
+                }, 300);
+            });
+            
+            // Effet de parallaxe au scroll
+            window.addEventListener('scroll', function() {
+                const scrollPosition = window.scrollY;
+                document.querySelector('.sun').style.transform = `translateY(${scrollPosition * 0.2}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
